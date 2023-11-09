@@ -1,6 +1,6 @@
 describe("smoke test", () => {
   it("quick run down of an user experience", () => {
-    cy.visit("https://www.calculator.net/mortgage-calculator.html");
+    cy.visit("/");
     cy.wait(5000);
     cy.get("#chouseprice").clear().type("500000");
     cy.get("#cdownpayment").clear().type("15");
