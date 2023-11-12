@@ -35,4 +35,43 @@ describe("field value stress test", () => {
       "Please provide a positive down payment value."
     );
   });
+  it("loan term input value", () => {
+    //    tesing negative numbers
+    cy.visit("/");
+    cy.get("#cloanterm").clear().type("-30");
+    cy.get('input[type="submit"][value="Calculate"]').click();
+    cy.get('.crighthalf div[style*="background-image"]').should(
+      "contain",
+      "Please provide a positive loan term value."
+    );
+    // tesing decimals
+    cy.visit("/");
+    cy.get("#cloanterm").clear().type("50.5");
+    cy.get('input[type="submit"][value="Calculate"]').click();
+    cy.get("h2.h2result").should("contain", "$1,930.69");
+    // tesing high numbers
+    cy.visit("/");
+    cy.get("#cloanterm").clear().type("1000");
+    cy.get('input[type="submit"][value="Calculate"]').click();
+    cy.get('.crighthalf div[style*="background-image"]').should(
+      "contain",
+      "Please provide a loan term value of 100 years or less."
+    );
+    // testing special characters
+    cy.visit("/");
+    cy.get("#cloanterm").clear().type("30!");
+    cy.get('input[type="submit"][value="Calculate"]').click();
+    cy.get("h2.h2result").should("contain", "$2,135.42");
+    cy.get("#cloanterm").clear().type("30%");
+    cy.get('input[type="submit"][value="Calculate"]').click();
+    cy.get("h2.h2result").should("contain", "$2,135.42");
+    // tesing letters
+    cy.visit("/");
+    cy.get("#cloanterm").clear().type("hello world");
+    cy.get('input[type="submit"][value="Calculate"]').click();
+    cy.get('.crighthalf div[style*="background-image"]').should(
+      "contain",
+      "Please provide a positive loan term value."
+    );
+  });
 });
